@@ -42,6 +42,7 @@ impl MemorySet {
     /// Init kernel memory set
     pub fn new_kernel() -> Self {
         let mut memory_set = Self::new_bare();
+
         // map trampoline
         memory_set.map_trampoline();
 

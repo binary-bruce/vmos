@@ -96,7 +96,6 @@ impl PageTable {
                 let frame = frame_alloc().unwrap();
                 *pte = PageTableEntry::new(frame.ppn, PTEFlags::V);
                 self.frames.push(frame);
-                return None;
             }
 
             ppn = pte.ppn()
