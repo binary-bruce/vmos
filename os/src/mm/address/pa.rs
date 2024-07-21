@@ -44,7 +44,7 @@ impl PhysAddr {
     pub fn page_offset(&self) -> usize {
         self.0 & (PAGE_SIZE - 1)
     }
-    
+
     pub fn aligned(&self) -> bool {
         self.page_offset() == 0
     }
