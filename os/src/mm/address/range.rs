@@ -20,6 +20,7 @@ where
     l: T,
     r: T,
 }
+
 impl<T> SimpleRange<T>
 where
     T: StepByOne + Copy + PartialEq + PartialOrd + Debug,
@@ -35,6 +36,7 @@ where
         self.r
     }
 }
+
 impl<T> IntoIterator for SimpleRange<T>
 where
     T: StepByOne + Copy + PartialEq + PartialOrd + Debug,
@@ -45,6 +47,7 @@ where
         SimpleRangeIterator::new(self.l, self.r)
     }
 }
+
 /// iterator for the simple range structure
 pub struct SimpleRangeIterator<T>
 where
@@ -53,6 +56,7 @@ where
     current: T,
     end: T,
 }
+
 impl<T> SimpleRangeIterator<T>
 where
     T: StepByOne + Copy + PartialEq + PartialOrd + Debug,
@@ -61,6 +65,7 @@ where
         Self { current: l, end: r }
     }
 }
+
 impl<T> Iterator for SimpleRangeIterator<T>
 where
     T: StepByOne + Copy + PartialEq + PartialOrd + Debug,
