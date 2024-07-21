@@ -1,6 +1,6 @@
 use alloc::vec::Vec;
 
-use super::address::ppn::PhysPageNum;
+use crate::mm::address::ppn::PhysPageNum;
 
 trait FrameAllocator {
     fn new() -> Self;

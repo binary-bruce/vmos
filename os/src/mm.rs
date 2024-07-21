@@ -1,4 +1,3 @@
 mod address;
-mod frame_allocator;
-mod frame_tracker;
+mod frame;
 mod page_table;
