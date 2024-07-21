@@ -19,10 +19,12 @@ pub fn init_frame_allocator() {
     )
 }
 
+#[inline]
 pub fn frame_alloc() -> Option<FrameTracker> {
     frame_allocator::frame_alloc()
 }
 
+#[inline]
 pub fn frame_dealloc(ppn: PhysPageNum) {
     frame_allocator::frame_dealloc(ppn)
 }

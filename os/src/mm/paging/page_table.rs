@@ -38,7 +38,6 @@ impl PageTable {
     pub fn map(&mut self, vpn: VirtPageNum, ppn: PhysPageNum, flags: PTEFlags) {
         let pte = self.find_pte_create(vpn).unwrap();
         assert!(!pte.is_valid(), "vpn {:?} is mapped before mapping", vpn);
-
         *pte = PageTableEntry::new(ppn, flags | PTEFlags::V);
     }
 
@@ -96,7 +95,6 @@ impl PageTable {
                 let frame = frame_alloc().unwrap();
                 *pte = PageTableEntry::new(frame.ppn, PTEFlags::V);
                 self.frames.push(frame);
-                return None;
             }
 
             ppn = pte.ppn()
