@@ -1,7 +1,7 @@
 use alloc::vec::Vec;
 use lazy_static::lazy_static;
 
-use crate::{mm::address::ppn::PhysPageNum, sync::UPSafeCell};
+use crate::{mm::address::PhysPageNum, sync::UPSafeCell};
 
 use super::frame_tracker::FrameTracker;
 

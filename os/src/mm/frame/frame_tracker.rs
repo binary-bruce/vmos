@@ -1,6 +1,6 @@
 use core::fmt::{Debug, Formatter, Result};
 
-use crate::mm::address::ppn::PhysPageNum;
+use crate::mm::address::PhysPageNum;
 
 /// manage the lifecycle of the contained ppn based on RAII
 pub struct FrameTracker {

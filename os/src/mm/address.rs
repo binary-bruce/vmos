@@ -1,5 +1,11 @@
 use crate::config::PAGE_SIZE_BITS;
 
+// re-export them all
+pub use pa::*;
+pub use ppn::*;
+pub use va::*;
+pub use vpn::*;
+
 pub mod pa;
 pub mod ppn;
 pub mod va;

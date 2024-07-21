@@ -1,9 +1,9 @@
 use frame_allocator::FRAME_ALLOCATOR;
-use frame_tracker::FrameTracker;
+pub use frame_tracker::FrameTracker; // re-export it
 
-use crate::{config::MEMORY_END, mm::address::pa::PhysAddr};
+use crate::{config::MEMORY_END, mm::address::PhysAddr};
 
-use super::address::ppn::PhysPageNum;
+use super::address::PhysPageNum;
 
 mod frame_allocator;
 mod frame_tracker;
