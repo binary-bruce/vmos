@@ -2,7 +2,7 @@
 
 use core::fmt::{self, Debug, Formatter};
 
-use super::VPN_WIDTH_SV39;
+use super::{VirtAddr, VPN_WIDTH_SV39};
 
 /// virtual page number
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq)]
@@ -23,6 +23,13 @@ impl From<usize> for VirtPageNum {
 impl From<VirtPageNum> for usize {
     fn from(v: VirtPageNum) -> Self {
         v.0
+    }
+}
+
+impl From<VirtAddr> for VirtPageNum {
+    fn from(v: VirtAddr) -> Self {
+        assert_eq!(v.page_offset(), 0);
+        v.floor()
     }
 }
 

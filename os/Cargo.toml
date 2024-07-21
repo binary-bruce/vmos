@@ -10,6 +10,7 @@ log = "0.4.21"
 sbi-rt = { version = "0.0.3", features = ["legacy"] }
 bitflags = "2.6.0"
 buddy_system_allocator = "0.10.0"
+xmas-elf = "0.9.1"
 
 [profile.release]
 debug = true
