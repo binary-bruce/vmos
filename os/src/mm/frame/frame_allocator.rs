@@ -22,7 +22,7 @@ pub(crate) struct StackFrameAllocator {
     // Because in the init phase, there is no actually dynamic memory allocation yet,
     // only a variable(with some internal fields: buf, len) allocted in data segment
     //
-    // For real dynamic memory allocation, we need to: 
+    // For real dynamic memory allocation, we need to:
     //   add `#[global_allocator]` to a static item that implements the GlobalAlloc trait
     recycled: Vec<usize>,
 }

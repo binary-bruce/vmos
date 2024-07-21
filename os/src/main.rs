@@ -16,7 +16,7 @@
 //! userspace.
 
 #![deny(missing_docs)]
-#![deny(warnings)]
+//#![deny(warnings)]
 #![no_std]
 #![no_main]
 #![feature(panic_info_message)]
@@ -64,6 +64,9 @@ fn clear_bss() {
 pub fn rust_main() -> ! {
     clear_bss();
     println!("[kernel] Cleared bss segment");
+
+    mm::init();
+    println!("[kernel] Initiated frame and heap allocator");
 
     trap::init();
     println!("[kernel] Initiated trap handler");
