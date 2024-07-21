@@ -39,11 +39,12 @@ impl MemorySet {
         }
     }
 
-    /// Without kernel stacks.
+    /// Init kernel memory set
     pub fn new_kernel() -> Self {
         let mut memory_set = Self::new_bare();
         // map trampoline
         memory_set.map_trampoline();
+
         // map kernel sections
         println!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
         println!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
@@ -52,6 +53,8 @@ impl MemorySet {
             ".bss [{:#x}, {:#x})",
             sbss_with_stack as usize, ebss as usize
         );
+
+        // Start to map kernel memory areas, all map type is Identical(va == pa)
         println!("mapping .text section");
         memory_set.push(
             MapArea::new(
@@ -62,6 +65,7 @@ impl MemorySet {
             ),
             None,
         );
+
         println!("mapping .rodata section");
         memory_set.push(
             MapArea::new(
@@ -72,6 +76,7 @@ impl MemorySet {
             ),
             None,
         );
+
         println!("mapping .data section");
         memory_set.push(
             MapArea::new(
@@ -82,6 +87,7 @@ impl MemorySet {
             ),
             None,
         );
+
         println!("mapping .bss section");
         memory_set.push(
             MapArea::new(
@@ -102,6 +108,7 @@ impl MemorySet {
             ),
             None,
         );
+
         println!("mapping memory-mapped registers");
         for pair in MMIO {
             memory_set.push(
@@ -114,15 +121,18 @@ impl MemorySet {
                 None,
             );
         }
+
         memory_set
     }
 
+    /// Init user memory set
     /// Include sections in elf and trampoline and TrapContext and user stack,
     /// also returns user_sp and entry point.
     pub fn from_elf(elf_data: &[u8]) -> (Self, usize, usize) {
         let mut memory_set = Self::new_bare();
         // map trampoline
         memory_set.map_trampoline();
+
         // map program headers of elf, with U flag
         let elf = xmas_elf::ElfFile::new(elf_data).unwrap();
         let elf_header = elf.header;
@@ -157,6 +167,7 @@ impl MemorySet {
         // map user stack with U flags
         let max_end_va: VirtAddr = max_end_vpn.into();
         let mut user_stack_bottom: usize = max_end_va.into();
+
         // guard page
         user_stack_bottom += PAGE_SIZE;
         let user_stack_top = user_stack_bottom + USER_STACK_SIZE;
@@ -169,6 +180,7 @@ impl MemorySet {
             ),
             None,
         );
+
         // used in sbrk
         memory_set.push(
             MapArea::new(
@@ -179,6 +191,7 @@ impl MemorySet {
             ),
             None,
         );
+
         // map TrapContext
         memory_set.push(
             MapArea::new(
@@ -189,6 +202,7 @@ impl MemorySet {
             ),
             None,
         );
+
         (
             memory_set,
             user_stack_top,
@@ -198,18 +212,6 @@ impl MemorySet {
 
     pub fn token(&self) -> usize {
         self.page_table.token()
-    }
-
-    pub fn insert_framed_area(
-        &mut self,
-        start_va: VirtAddr,
-        end_va: VirtAddr,
-        permission: MapPermission,
-    ) {
-        self.push(
-            MapArea::new(start_va, end_va, MapType::Framed, permission),
-            None,
-        );
     }
 
     pub fn activate(&self) {
@@ -233,6 +235,7 @@ impl MemorySet {
     }
 
     /// Mention that trampoline is not collected by areas.
+    /// the physical frame of trampoline area is in kernel text(executable) section, see linker-qemu.ld
     fn map_trampoline(&mut self) {
         self.page_table.map(
             VirtAddr::from(TRAMPOLINE).into(),
