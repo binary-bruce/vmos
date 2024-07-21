@@ -21,6 +21,8 @@
 #![no_main]
 #![feature(panic_info_message)]
 
+extern crate alloc;
+
 use core::arch::global_asm;
 
 #[path = "boards/qemu.rs"]
