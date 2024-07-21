@@ -1,6 +1,9 @@
 use alloc::vec::Vec;
+use lazy_static::lazy_static;
 
-use crate::mm::address::ppn::PhysPageNum;
+use crate::{mm::address::ppn::PhysPageNum, sync::UPSafeCell};
+
+use super::frame_tracker::FrameTracker;
 
 trait FrameAllocator {
     fn new() -> Self;
@@ -10,7 +13,7 @@ trait FrameAllocator {
     fn dealloc(&mut self, ppn: PhysPageNum);
 }
 
-pub struct StackFrameAllocator {
+pub(crate) struct StackFrameAllocator {
     current: usize,
     end: usize,
 
@@ -18,6 +21,9 @@ pub struct StackFrameAllocator {
     //
     // Because in the init phase, there is no actually dynamic memory allocation yet,
     // only a variable(with some internal fields: buf, len) allocted in data segment
+    //
+    // For real dynamic memory allocation, we need to: 
+    //   add `#[global_allocator]` to a static item that implements the GlobalAlloc trait
     recycled: Vec<usize>,
 }
 
@@ -55,4 +61,20 @@ impl FrameAllocator for StackFrameAllocator {
         }
         self.recycled.push(ppn);
     }
+}
+
+lazy_static! {
+    pub(crate) static ref FRAME_ALLOCATOR: UPSafeCell<StackFrameAllocator> =
+        unsafe { UPSafeCell::new(StackFrameAllocator::new()) };
+}
+
+pub(crate) fn frame_alloc() -> Option<FrameTracker> {
+    FRAME_ALLOCATOR
+        .exclusive_access()
+        .alloc()
+        .map(FrameTracker::new)
+}
+
+pub(crate) fn frame_dealloc(ppn: PhysPageNum) {
+    FRAME_ALLOCATOR.exclusive_access().dealloc(ppn)
 }

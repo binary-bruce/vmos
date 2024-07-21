@@ -25,6 +25,6 @@ impl Debug for FrameTracker {
 
 impl Drop for FrameTracker {
     fn drop(&mut self) {
-        todo!()
+        super::frame_dealloc(self.ppn)
     }
 }
