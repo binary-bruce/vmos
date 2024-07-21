@@ -2,7 +2,7 @@ use crate::mm::address::PhysPageNum;
 
 use super::PTEFlags;
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone)]
 #[repr(C)]
 /// page table entry structure
 pub struct PageTableEntry {
