@@ -31,6 +31,7 @@ mod console;
 mod config;
 mod lang_items;
 mod loader;
+mod mm;
 mod sbi;
 mod stack;
 mod sync;
