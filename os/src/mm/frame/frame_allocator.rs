@@ -24,6 +24,7 @@ pub(crate) struct StackFrameAllocator {
     //
     // For real dynamic memory allocation, we need to:
     //   add `#[global_allocator]` to a static item that implements the GlobalAlloc trait
+    // It utilizes heap allocator to allocate memory in BSS(heap) segment for the kernel
     recycled: Vec<usize>,
 }
 
