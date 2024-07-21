@@ -1,5 +1,5 @@
 use frame_allocator::FRAME_ALLOCATOR;
-use frame_tracker::FrameTracker;
+pub use frame_tracker::FrameTracker; // re-export it
 
 use crate::{config::MEMORY_END, mm::address::pa::PhysAddr};
 

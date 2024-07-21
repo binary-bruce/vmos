@@ -1,7 +1,7 @@
 mod address;
 mod frame;
 mod heap;
-mod page_table;
+mod paging;
 
 /// init heap allocator and frame allocator
 pub fn init() {
