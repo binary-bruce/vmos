@@ -1,6 +1,6 @@
-use crate::mm::address::ppn::PhysPageNum;
+use crate::mm::address::PhysPageNum;
 
-use super::pte_flags::PTEFlags;
+use super::PTEFlags;
 
 #[derive(Copy, Clone)]
 #[repr(C)]

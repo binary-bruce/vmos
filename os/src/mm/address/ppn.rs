@@ -2,7 +2,7 @@
 
 use core::fmt::{Debug, Formatter, Result};
 
-use crate::mm::page_table::PageTableEntry;
+use crate::mm::paging::PageTableEntry;
 
 use super::{pa::PhysAddr, PPN_WIDTH_SV39};
 
